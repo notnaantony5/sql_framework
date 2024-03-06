@@ -29,8 +29,6 @@ class Model:
                  f"id INTEGER PRIMARY KEY AUTOINCREMENT,"
                  f"{', '.join(fields)}"
                  f" )")
-        print(self)
-        print(query)
         with sqlite3.connect(self.db_name) as conn:
             cur = conn.cursor()
             cur.execute(query)
