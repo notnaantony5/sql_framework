@@ -32,13 +32,9 @@ class Model:
                     if isinstance(value, str)
                     else value)
                 fields.append((name, value))
-        print(names)
-        print(kwargs.items())
-        print(fields)
         query = (f"INSERT INTO {cls.__name__.lower()} "
                  f"({', '.join(map(lambda x: x[0], fields))}) "
                  f"VALUES ({', '.join(map(lambda x: str(x[1]), fields))})")
-        print(query)
         with sqlite3.connect(cls.db_name) as conn:
             cur = conn.cursor()
             cur.execute(query)
