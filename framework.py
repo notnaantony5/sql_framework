@@ -18,6 +18,31 @@ TYPES = {
 }
 class Model:
     db_name = "db.sqlite3"
+
+    @classmethod
+    def create(cls, **kwargs):
+        names = []
+        for name, _type in cls.__annotations__.items():
+            if issubclass(_type, BaseColumn):
+                names.append(name)
+        fields = []
+        for name, value in kwargs.items():
+            if name in names:
+                value = (f"'{value}'"
+                    if isinstance(value, str)
+                    else value)
+                fields.append((name, value))
+        print(names)
+        print(kwargs.items())
+        print(fields)
+        query = (f"INSERT INTO {cls.__name__.lower()} "
+                 f"({', '.join(map(lambda x: x[0], fields))}) "
+                 f"VALUES ({', '.join(map(lambda x: str(x[1]), fields))})")
+        print(query)
+        with sqlite3.connect(cls.db_name) as conn:
+            cur = conn.cursor()
+            cur.execute(query)
+            conn.commit()
     def __create_table(self):
         fields = []
         for name, _type in self.__annotations__.items():

@@ -9,3 +9,4 @@ class Salary(Model):
     person: Integer
 
 run()
+Person.create(name='John', age=4)
